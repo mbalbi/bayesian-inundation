@@ -17,6 +17,7 @@ Python:
 - mh_posterior.py: repository of functions to perform adaptive MCMC simulations
 - preprocess.py: repository of functions to create Lisflood-fp input files from user defined-input
 - minimax_tilting_sampler.py: auxiliary function to sample truncated multivariate normal variables.
+- 1dexample: folder with the jupyter notebook explaining and developing the 1D synthetic example calibration.
 
 R:
 
