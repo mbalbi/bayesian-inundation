@@ -1,0 +1,21 @@
+# 
+
+resroot	temp
+dirroot	temp
+sim_time	1382400
+initial_step	1
+massint	10
+saveint	153600
+SGCn	0.119092489694755
+fpfric	0.124533327915528
+DEMfile	Buscot.dem.asc
+bcifile	Buscot.bci
+bdyfile	Buscot.bdy
+SGCwidth	Buscot.width.asc
+SGCbed	Buscot.bed.asc
+SGCbank	Buscot.dem.asc
+startfile	Buscot.depth.asc
+weirfile	Buscot.weir
+
+mint_hk
+elevoff
