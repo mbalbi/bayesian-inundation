@@ -332,6 +332,21 @@ def paths_diagnostics( Xpaths, plot, *arg ):
 
     return R, var_j, rhot, neff
 
+def autocorr(data, maxlags):
+    # Mean
+    mean = np.mean(data)
+
+    # Variance
+    var = np.var(data)
+
+    # Normalized data
+    ndata = data - mean
+
+    acorr = np.correlate(ndata, ndata, 'full')[len(data)-1:] 
+    acorr = acorr / var / len(ndata)
+    
+    return acorr[:maxlags]
+
 def plot_diagnostics( Xpaths, R, *args):
     
     # Logpriors
@@ -360,8 +375,11 @@ def plot_diagnostics( Xpaths, R, *args):
         ax[i,1].text(.5,.9, 'R={}'.format(str(R[i])[:4]),
                     horizontalalignment='center', transform=ax[i,1].transAxes)
         # Sampling autocorrelation
-        o_acorr = ax[i,2].acorr( Xpaths[:,i,0], usevlines=True, normed=True,
-                                    maxlags=50, lw=2 )
+        ac = autocorr( Xpaths[:,i,0], maxlags=50 )
+        o_acorr = ax[i,2].plot( np.arange(1,len(ac)+1,1), ac )
+        ax[i,2].set_ylabel('autocorrelation')
+        # o_acorr = ax[i,2].acorr( Xpaths[:,i,0], usevlines=True, normed=True,
+        #                             maxlags=50, lw=2 )
         
     return
 

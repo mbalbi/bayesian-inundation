@@ -191,6 +191,21 @@ def paths_diagnostics( Xpaths, plot, prior ):
 
     return R, var_j, rhot, neff
 
+def autocorr(data, maxlags):
+    # Mean
+    mean = np.mean(data)
+
+    # Variance
+    var = np.var(data)
+
+    # Normalized data
+    ndata = data - mean
+
+    acorr = np.correlate(ndata, ndata, 'full')[len(data)-1:] 
+    acorr = acorr / var / len(ndata)
+    
+    return acorr[:maxlags]
+
 def plot_diagnostics( Xpaths, R, prior):
     
     # Stack paths
@@ -200,7 +215,7 @@ def plot_diagnostics( Xpaths, R, prior):
         Xstack = np.vstack( [Xstack, xpath] )
     
     # Create figure
-    fig, ax = plt.subplots(nrows=Xpaths.shape[1], ncols=2, figsize=(14,9))
+    fig, ax = plt.subplots(nrows=Xpaths.shape[1], ncols=3, figsize=(14,9))
     fig.tight_layout()
     fig.subplots_adjust( wspace=0.1, hspace=0.15)
 
@@ -216,7 +231,10 @@ def plot_diagnostics( Xpaths, R, prior):
         ax[i,1].text(.5,.9, 'R={}'.format(str(R[i])[:4]),
                     horizontalalignment='center', transform=ax[i,1].transAxes)
         # Sampling autocorrelation
+        ac = autocorr( Xpaths[:,i,0], maxlags=50 )
+        o_acorr = ax[i,2].plot( np.arange(1,len(ac)+1,1), ac )
+        ax[i,2].set_ylabel('autocorrelation')
         # o_acorr = ax[i,2].acorr( Xpaths[:,i,0], usevlines=True, normed=True,
-        #                             maxlags=50, lw=2 )
+        #                          maxlags=50, lw=2 )
         
     return
